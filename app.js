@@ -12,7 +12,6 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { postUsers, login } = require('./controllers/users');
 
-// console.log(http);
 // Слушаем 3000 порт
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 // Создаем приложение
@@ -75,7 +74,6 @@ app.use((err, req, res, next) => {
   res
     .status(statusCode)
     .send({
-      // проверяем статус и выставляем сообщение в зависимости от него
       message: statusCode === 500
         ? 'На сервере произошла ошибка'
         : message,

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 
-const { JWT_SECRET = 'mesto-secret' } = process.env;
+const { JWT_SECRET = 'movies-explorer-secret' } = process.env;
 
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');

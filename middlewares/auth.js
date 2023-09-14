@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedErrors = require('../errors/UnauthorizedErrors');
 
-const { JWT_SECRET = 'mesto-secret' } = process.env;
-console.log(JWT_SECRET);
+const { JWT_SECRET = 'movies-explorer-secret' } = process.env;
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
@@ -14,7 +13,6 @@ module.exports = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
 
-  console.log(JWT_SECRET);
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
