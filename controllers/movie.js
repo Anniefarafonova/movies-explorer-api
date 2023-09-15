@@ -13,7 +13,6 @@ module.exports.getMovies = (req, res, next) => {
     .then((movie) => {
       res.status(httpConstants.HTTP_STATUS_OK).send(movie);
     })
-    // })
     .catch((err) => {
       next(err);
     });

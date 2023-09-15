@@ -11,6 +11,7 @@ const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { postUsers, login } = require('./controllers/users');
+const InternalServerErrors = require('./errors/InternalServerErrors');
 
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
@@ -69,11 +70,11 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
+  const { statusCode = InternalServerErrors, message } = err;
   res
     .status(statusCode)
     .send({
-      message: statusCode === 500
+      message: statusCode === InternalServerErrors
         ? 'На сервере произошла ошибка'
         : message,
     });
