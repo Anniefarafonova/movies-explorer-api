@@ -12,7 +12,7 @@ const ConflictingRequest = require('../errors/ConflictingRequest');
 
 // возвращает информацию о пользователе
 module.exports.getUsers = (req, res, next) => {
-  User.find({})
+  User.findById(req.user._id)
     .then((user) => {
       res.status(httpConstants.HTTP_STATUS_OK).send(user);
     })
@@ -27,7 +27,7 @@ module.exports.patchUsers = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      res.status(httpConstants.HTTP_STATUS_OK).send(user);
+      res.status(httpConstants.HTTP_STATUS_CREATED).send(user);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {

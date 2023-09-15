@@ -11,7 +11,6 @@ module.exports.getMovies = (req, res, next) => {
   const owner = req.user._id;
   Movie.find({ owner })
     .then((movie) => {
-      // if (movie.owner.equals(req.user._id)) {
       res.status(httpConstants.HTTP_STATUS_OK).send(movie);
     })
     // })
