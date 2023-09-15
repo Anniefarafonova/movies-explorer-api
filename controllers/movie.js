@@ -66,7 +66,7 @@ module.exports.deleteMoviesID = (req, res, next) => {
         })
         .catch((err) => {
           if (err instanceof mongoose.Error.DocumentNotFoundError) {
-            next(new NotFoundError('Пользователь по указанному _id не найден.'));
+            next(new NotFoundError('Фильм по указанному _id не найден.'));
           } else if (err instanceof mongoose.Error.CastError) {
             next(new BadRequestError('Переданы некорректные данные.'));
           } else {
@@ -76,7 +76,7 @@ module.exports.deleteMoviesID = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'TypeError') {
-        next(new NotFoundError('Пользователь по указанному _id не найден.'));
+        next(new NotFoundError('Фильм по указанному _id не найден.'));
       } else {
         next(err);
       }
