@@ -8,10 +8,13 @@ const ForbiddenError = require('../errors/ForbiddenError');
 
 // возвращает все сохранённые текущим пользователем фильмы
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movie) => {
+      // if (movie.owner.equals(req.user._id)) {
       res.status(httpConstants.HTTP_STATUS_OK).send(movie);
     })
+    // })
     .catch((err) => {
       next(err);
     });
