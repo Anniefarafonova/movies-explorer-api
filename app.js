@@ -76,17 +76,26 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  // const { statusCode = InternalServerErrors, message } = err;
-  const status = err.status || 500; res.status(status);
-  res
-    .status(status)
-    .send({
-      message: status === InternalServerErrors
-        ? 'На сервере произошла ошибка'
-        : err.message,
-    });
+  const { statusCode = 500 } = err;
+
+  res.status(err.statusCode).send({
+    message: statusCode === 500
+      ? 'На сервере произошла ошибка'
+      : err.message,
+    status: statusCode,
+  });
   next();
 });
+// const { statusCode = InternalServerErrors, message } = err;
+// res
+//   .status(statusCode)
+//   .send({
+//     message: statusCode === InternalServerErrors
+//       ? 'На сервере произошла ошибка'
+//       : message,
+//   });
+// next();
+// });
 
 app.listen(PORT, () => {
   console.log(`порт приложение слушает ${PORT}`);
