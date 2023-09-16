@@ -4,9 +4,3 @@ const regexEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 
 module.exports = regexUrl;
 module.exports = regexEmail;
-// module.exports = regexUrl;
-
-// module.exports = {
-//   regexUrl,
-//   regexEmail,
-// };

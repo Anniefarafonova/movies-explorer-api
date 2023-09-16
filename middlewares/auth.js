@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../utils/config');
 const UnauthorizedErrors = require('../errors/UnauthorizedErrors');
-
-const { JWT_SECRET = 'movies-explorer-secret' } = process.env;
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;

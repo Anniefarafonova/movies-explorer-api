@@ -58,7 +58,7 @@ module.exports.deleteMoviesID = (req, res, next) => {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Фильм другого пользователя.');
       }
-      Movie.findByIdAndRemove(movie)
+      Movie.findByIdAndRemove(req.params.movieId)
         .orFail()
         .then(() => {
           res.status(httpConstants.HTTP_STATUS_OK).send({ message: 'Фильм удален.' });
