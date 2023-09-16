@@ -76,13 +76,14 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  const { statusCode = InternalServerErrors, message } = err;
+  // const { statusCode = InternalServerErrors, message } = err;
+  const status = err.status || 500; res.status(status);
   res
-    .status(statusCode)
+    .status(status)
     .send({
-      message: statusCode === InternalServerErrors
+      message: status === InternalServerErrors
         ? 'На сервере произошла ошибка'
-        : message,
+        : err.message,
     });
   next();
 });
