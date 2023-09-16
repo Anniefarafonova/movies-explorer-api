@@ -7,7 +7,7 @@ const User = require('../model/user');
 const { JWT_SECRET } = require('../utils/config');
 
 const BadRequestError = require('../errors/BadRequestError');
-// const NotFoundError = require('../errors/NotFoundError');
+const NotFoundError = require('../errors/NotFoundError');
 const ConflictingRequest = require('../errors/ConflictingRequest');
 
 // возвращает информацию о пользователе
@@ -25,19 +25,21 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.patchUsers = (req, res, next) => {
   const { name, email } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
-    .orFail()
+    .orFail(() => new NotFoundError('Пользователь с таким id не найден'))
     .then((user) => {
       res.status(httpConstants.HTTP_STATUS_CREATED).send({
         name: user.name, email: user.email,
       });
     })
     .catch((err) => {
-      if (err.code === 11000) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else if (err.code === 11000) {
         next(new ConflictingRequest('Пользователь с таким email уже существует'));
-      // } else if (err instanceof mongoose.Error.ValidationError) {
-      //   next(new BadRequestError('Переданы некорректные данные.'));
-      //   // } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-      //   //   next(new NotFoundError('Пользователь по указанному _id не найден.'));
+        // } else if (err instanceof mongoose.Error.ValidationError) {
+        //   next(new BadRequestError('Переданы некорректные данные.'));
+        // } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        //   next(new NotFoundError('Пользователь по указанному _id не найден.'));
       } else {
         next(err);
       }
