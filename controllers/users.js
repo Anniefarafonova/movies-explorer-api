@@ -30,7 +30,9 @@ module.exports.patchUsers = (req, res, next) => {
       res.status(httpConstants.HTTP_STATUS_CREATED).send(user);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if (err.code === 11000) {
+        next(new ConflictingRequest('Пользователь с таким email уже существует'));
+      } else if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError('Переданы некорректные данные.'));
       } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
         next(new NotFoundError('Пользователь по указанному _id не найден.'));
