@@ -27,9 +27,7 @@ module.exports.patchUsers = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      res.status(httpConstants.HTTP_STATUS_CREATED).send({
-        name: user.name, email: user.email,
-      });
+      res.status(httpConstants.HTTP_STATUS_CREATED).send(user);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
