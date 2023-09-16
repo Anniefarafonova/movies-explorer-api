@@ -75,17 +75,17 @@ app.use(errorLogger);
 // обработчики ошибок celebrate
 app.use(errors());
 
-// app.use((err, req, res, next) => {
-//   const { statusCode = 500, message } = err;
-//   res
-//     .status(statusCode)
-//     .send({
-//       message: statusCode === 500
-//         ? 'На сервере произошла ошибка'
-//         : message,
-//     });
-//   next();
-// });
+app.use((err, req, res, next) => {
+  const { statusCode = InternalServerErrors, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === InternalServerErrors
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`порт приложение слушает ${PORT}`);
