@@ -7,7 +7,7 @@ const User = require('../model/user');
 const { JWT_SECRET } = require('../utils/config');
 
 const BadRequestError = require('../errors/BadRequestError');
-const NotFoundError = require('../errors/NotFoundError');
+// const NotFoundError = require('../errors/NotFoundError');
 const ConflictingRequest = require('../errors/ConflictingRequest');
 
 // возвращает информацию о пользователе
@@ -34,8 +34,8 @@ module.exports.patchUsers = (req, res, next) => {
         next(new ConflictingRequest('Пользователь с таким email уже существует'));
       } else if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError('Переданы некорректные данные.'));
-      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-        next(new NotFoundError('Пользователь по указанному _id не найден.'));
+        // } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        //   next(new NotFoundError('Пользователь по указанному _id не найден.'));
       } else {
         next(err);
       }

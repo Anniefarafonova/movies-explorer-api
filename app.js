@@ -13,7 +13,6 @@ const { PORT, DB_URL } = require('./utils/config');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { postUsers, login } = require('./controllers/users');
-const InternalServerErrors = require('./errors/InternalServerErrors');
 
 const app = express();
 const limiter = rateLimit({
@@ -76,26 +75,17 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500 } = err;
-
-  res.status(err.statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : err.message,
-    status: statusCode,
-  });
+  // если у ошибки нет статуса, выставляем 500
+  const { statusCode = 500, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
   next();
 });
-// const { statusCode = InternalServerErrors, message } = err;
-// res
-//   .status(statusCode)
-//   .send({
-//     message: statusCode === InternalServerErrors
-//       ? 'На сервере произошла ошибка'
-//       : message,
-//   });
-// next();
-// });
 
 app.listen(PORT, () => {
   console.log(`порт приложение слушает ${PORT}`);
